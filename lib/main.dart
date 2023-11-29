@@ -17,11 +17,27 @@ class MainApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text(ref.watch(labelProvider)),
-        ),
+      home: Home(),
+    );
+  }
+}
+
+@riverpod
+Future<List<String>> fetchItems(FetchItemsRef ref, {required int page}) async {
+  await Future.delayed(const Duration(seconds: 3));
+  return List.generate(50, (index) => 'Hello in page $page, item $index');
+}
+
+class Home extends ConsumerWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Infinite scrolling'),
       ),
+      body: Container(),
     );
   }
 }
