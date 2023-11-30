@@ -27,9 +27,9 @@ class MainApp extends ConsumerWidget {
 
 @riverpod
 Future<List<String>> fetchItems(FetchItemsRef ref, {required int page}) async {
-  if (page > 2) return ['a', 'b'];
-
   await Future.delayed(const Duration(seconds: 3));
+
+  if (page > 2) return ['a', 'b'];
 
   return List.generate(50, (index) => 'Hello in page $page, item $index');
 }
@@ -56,7 +56,11 @@ class Home extends ConsumerWidget {
               return Text(items[itemIndexOnPage]);
             },
             error: (error, stackTrace) => Text('err $error'),
-            loading: () => Text('Loading'),
+            loading: () {
+              // only generate one Loading text within a page. If not the first item on the page return null
+              if (itemIndexOnPage != 0) return null;
+              return Text('Loading...');
+            },
           );
         },
       ),
