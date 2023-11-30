@@ -27,7 +27,10 @@ class MainApp extends ConsumerWidget {
 
 @riverpod
 Future<List<String>> fetchItems(FetchItemsRef ref, {required int page}) async {
+  if (page > 2) return ['a', 'b'];
+
   await Future.delayed(const Duration(seconds: 3));
+
   return List.generate(50, (index) => 'Hello in page $page, item $index');
 }
 
@@ -48,13 +51,13 @@ class Home extends ConsumerWidget {
 
           return pageValue.when(
             data: (items) {
+              // stop adding items when the index of the item on the page is above the items fetched count
+              if (itemIndexOnPage >= items.length) return null;
               return Text(items[itemIndexOnPage]);
             },
             error: (error, stackTrace) => Text('err $error'),
             loading: () => Text('Loading'),
           );
-
-          return Text('$index');
         },
       ),
     );
