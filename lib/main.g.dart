@@ -20,7 +20,7 @@ final labelProvider = AutoDisposeProvider<String>.internal(
 );
 
 typedef LabelRef = AutoDisposeProviderRef<String>;
-String _$fetchItemsHash() => r'21a91d967f41f1c11b3384340e24a7cd1ef4419e';
+String _$fetchItemsHash() => r'23d1ae788a2741591cf05d5b5d18f17105b47d06';
 
 /// Copied from Dart SDK
 class _SystemHash {

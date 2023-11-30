@@ -26,14 +26,21 @@ class MainApp extends ConsumerWidget {
   }
 }
 
+extension on AutoDisposeRef<Object?> {
+  void cacheFor(Duration duration) {
+    // keeps state for the duration
+    final keepAliveLink = keepAlive();
+    Timer(Duration(minutes: 5), () {
+      // after duration the state if not used is destroyed
+      keepAliveLink.close();
+    });
+  }
+}
+
 @riverpod
 Future<List<String>> fetchItems(FetchItemsRef ref, {required int page}) async {
   // keeps state for 5 minutes
-  final keepAliveLink = ref.keepAlive();
-  Timer(Duration(minutes: 5), () {
-    // after 5 minutes the state if not used is destroyed
-    keepAliveLink.close();
-  });
+  ref.cacheFor(Duration(minutes: 5));
 
   await Future.delayed(const Duration(seconds: 3));
 
