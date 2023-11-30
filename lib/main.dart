@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -27,6 +28,13 @@ class MainApp extends ConsumerWidget {
 
 @riverpod
 Future<List<String>> fetchItems(FetchItemsRef ref, {required int page}) async {
+  // keeps state for 5 minutes
+  final keepAliveLink = ref.keepAlive();
+  Timer(Duration(minutes: 5), () {
+    // after 5 minutes the state if not used is destroyed
+    keepAliveLink.close();
+  });
+
   await Future.delayed(const Duration(seconds: 3));
 
   if (page > 2) return ['a', 'b'];
